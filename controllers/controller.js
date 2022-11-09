@@ -115,6 +115,17 @@ class Controller {
       next(error);
     }
   }
+  static async readCategory(req, res, next) {
+    try {
+      let category = await Category.findAll({
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      });
+      if (!category) throw { name: "Category Not Found" };
+      res.status(200).json(category);
+    } catch (error) {
+      next(error);
+    }
+  }
   static async addNewNotes(req, res, next) {
     try {
       const { title, description, date, categoryId } = req.body;
