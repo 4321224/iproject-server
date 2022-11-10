@@ -174,6 +174,17 @@ class Controller {
       next(error);
     }
   }
+  static async notesById(req, res, next) {
+    try {
+      let notes = await Note.findByPk(req.params.id, {
+        include: [User, Category],
+      });
+
+      res.status(200).json(notes);
+    } catch (error) {
+      next(error);
+    }
+  }
   static async deleteNotes(req, res, next) {
     try {
       let data = await Note.findByPk(req.params.id);
@@ -190,6 +201,8 @@ class Controller {
     try {
       const { title, description, date, categoryId } = req.body;
       const { id } = req.user;
+      console.log(req.body);
+      console.log(req.user);
       let data = await Note.update(
         {
           title: title,
